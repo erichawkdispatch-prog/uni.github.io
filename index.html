@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhD in Mathematics Finder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb" id="breadcrumb">
+            <span class="breadcrumb-item active" data-view="home">Home</span>
+        </nav>
+
+        <!-- Country Selection View -->
+        <div id="country-view" class="view active">
+            <h1>Find Your PhD in Mathematics</h1>
+            <p class="subtitle">Select a country or region to explore PhD programs</p>
+            
+            <!-- Direct Application Box -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; margin-bottom: 30px; color: white; cursor: pointer;" onclick="window.location.href='direct-applications.html'">
+                <h2 style="margin: 0 0 10px 0; color: white;">⭐ Direct PhD Applications (No Professor Pre-Approval)</h2>
+                <p style="margin: 0; font-size: 1.1rem;">Apply directly to structured programs without needing a supervisor beforehand</p>
+                <p style="margin: 10px 0 0 0; font-weight: bold;">Click here to view 100+ universities →</p>
+            </div>
+            
+            <div class="country-grid">
+                <button class="country-card" data-country="canada">
+                    <span class="flag">🇨🇦</span>
+                    <h2>Canada</h2>
+                    <p>10 Universities</p>
+                </button>
+                
+                <button class="country-card" data-country="australia">
+                    <span class="flag">🇦🇺</span>
+                    <h2>Australia</h2>
+                    <p>8 Universities</p>
+                </button>
+                
+                <button class="country-card" data-country="newzealand">
+                    <span class="flag">🇳🇿</span>
+                    <h2>New Zealand</h2>
+                    <p>6 Universities</p>
+                </button>
+                
+                <button class="country-card" data-country="europe">
+                    <span class="flag">🇪🇺</span>
+                    <h2>Europe</h2>
+                    <p>250+ Universities</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- European Countries View -->
+        <div id="europe-countries-view" class="view">
+            <div class="view-header">
+                <button class="back-button" id="back-from-europe">← Back</button>
+                <h1>Select a European Country</h1>
+            </div>
+            <div id="europe-countries-grid" class="country-grid"></div>
+        </div>
+
+        <!-- University List View -->
+        <div id="university-view" class="view">
+            <div class="view-header">
+                <button class="back-button" id="back-to-countries">← Back</button>
+                <h1 id="country-title"></h1>
+            </div>
+            
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="university-search" 
+                    placeholder="Search universities..."
+                    class="search-input"
+                >
+            </div>
+            
+            <div id="university-list" class="university-list"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="direct-application-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

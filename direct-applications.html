@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct PhD Applications - No Professor Pre-Approval</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .highlight-box h1 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        .highlight-box p {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        .program-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="breadcrumb">
+            <span class="breadcrumb-item" onclick="window.location.href='index.html'">Home</span>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-item active">Direct Applications</span>
+        </nav>
+
+        <div class="highlight-box">
+            <h1>⭐ Direct PhD Applications</h1>
+            <p>Universities where you can apply directly without professor pre-approval</p>
+            <p style="font-size: 1rem; margin-top: 10px; opacity: 0.9;">Structured programs with centralized admission systems</p>
+        </div>
+
+        <div class="view-header">
+            <button class="back-button" onclick="window.location.href='index.html'">← Back to Home</button>
+            <h1 id="region-title">Select a Region</h1>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search universities or programs..." class="search-input">
+        </div>
+
+        <div id="regions-view">
+            <div class="country-grid">
+                <button class="country-card" onclick="showRegion('europe')">
+                    <span class="flag">🇪🇺</span>
+                    <h2>Europe</h2>
+                    <p>44 Universities</p>
+                </button>
+                <button class="country-card" onclick="showRegion('australia')">
+                    <span class="flag">🇦🇺</span>
+                    <h2>Australia</h2>
+                    <p>23 Universities</p>
+                </button>
+                <button class="country-card" onclick="showRegion('newzealand')">
+                    <span class="flag">🇳🇿</span>
+                    <h2>New Zealand</h2>
+                    <p>8 Universities</p>
+                </button>
+                <button class="country-card" onclick="showRegion('canada')">
+                    <span class="flag">🇨🇦</span>
+                    <h2>Canada</h2>
+                    <p>11 Universities</p>
+                </button>
+            </div>
+        </div>
+
+        <div id="universities-list" class="university-list" style="display: none;"></div>
+    </div>
+
+    <script src="direct-application-data.js"></script>
+    <script>
+        let currentRegion = null;
+        let allUniversities = [];
+
+        function showRegion(region) {
+            currentRegion = region;
+            document.getElementById('regions-view').style.display = 'none';
+            document.getElementById('universities-list').style.display = 'block';
+            document.getElementById('region-title').textContent = directApplicationRegionNames[region];
+            
+            // Flatten universities
+            if (region === 'europe') {
+                allUniversities = [];
+                Object.keys(directApplicationUniversities.europe).forEach(country => {
+                    directApplicationUniversities.europe[country].forEach(uni => {
+                        allUniversities.push({...uni, country: directApplicationEuropeCountries[country]});
+                    });
+                });
+            } else {
+                allUniversities = directApplicationUniversities[region].map(uni => ({...uni}));
+            }
+            
+            renderUniversities(allUniversities);
+        }
+
+        function renderUniversities(universities) {
+            const list = document.getElementById('universities-list');
+            list.innerHTML = '';
+            
+            if (universities.length === 0) {
+                list.innerHTML = '<div class="no-results"><h3>No universities found</h3><p>Try adjusting your search</p></div>';
+                return;
+            }
+            
+            universities.forEach(uni => {
+                const card = document.createElement('a');
+                card.className = 'university-card';
+                card.href = uni.url;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                
+                card.innerHTML = `
+                    <h3>${uni.name}</h3>
+                    <span class="program-badge">${uni.program}</span>
+                    <p class="university-note" style="margin-top: 12px;">✓ ${uni.note}</p>
+                    ${uni.country ? `<span class="university-country">${uni.country}</span>` : ''}
+                `;
+                
+                list.appendChild(card);
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            if (!currentRegion) return;
+            
+            const term = e.target.value.toLowerCase();
+            const filtered = allUniversities.filter(uni =>
+                uni.name.toLowerCase().includes(term) ||
+                uni.program.toLowerCase().includes(term) ||
+                uni.note.toLowerCase().includes(term) ||
+                (uni.country && uni.country.toLowerCase().includes(term))
+            );
+            
+            renderUniversities(filtered);
+        });
+
+        document.querySelector('.back-button').addEventListener('click', () => {
+            if (currentRegion) {
+                currentRegion = null;
+                allUniversities = [];
+                document.getElementById('regions-view').style.display = 'block';
+                document.getElementById('universities-list').style.display = 'none';
+                document.getElementById('region-title').textContent = 'Select a Region';
+                document.getElementById('search-input').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
